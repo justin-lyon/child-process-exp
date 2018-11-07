@@ -10,7 +10,7 @@ const options = {
   env: process.env
 }
 
-const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct","message": "%s", "files": [%B]}'
+const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct","message": "%s", "files": []}'
 const gitLogArgs = [
   'log',
   '--first-parent',
