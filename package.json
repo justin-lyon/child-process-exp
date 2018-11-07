@@ -1,0 +1,22 @@
+{
+  "name": "child-process-exp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlyon87/child-process-exp.git"
+  },
+  "keywords": [
+    "child_process"
+  ],
+  "author": "Justin Lyon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jlyon87/child-process-exp/issues"
+  },
+  "homepage": "https://github.com/jlyon87/child-process-exp#readme"
+}
