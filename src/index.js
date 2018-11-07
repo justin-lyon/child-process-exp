@@ -55,7 +55,6 @@ gitLog.on('exit', (code, signal) => {
       if(isJson.test(bufStr)) {
         acc.push(JSON.parse(bufStr))
       } else if(!isEmpty(bufStr)) {
-        console.log('not empty and not json', bufStr.split('\t'))
         const parts = bufStr.split('\t')
         const change = {
           status: parts[0],

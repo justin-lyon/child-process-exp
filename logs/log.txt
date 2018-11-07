@@ -1,3 +1,7 @@
+{"commit": "1fafd09f239f98170b0f52a8ac7de0f62cfcdf51","author": "jlyon <jml6487@gmail.com>","date": "1541634833","message": "fixed it. only had to think about it all the way home from work today", "changes": []}
+M	logs/log.txt
+M	src/index.js
+
 {"commit": "d76c1235c9ba1bbc3b0c5831bd5965f3dec03393","author": "Justin Lyon <jml6487@gmail.com>","date": "1541627624","message": "eod commit work in progress - dont judge me", "changes": []}
 M	logs/log.txt
 M	src/index.js
