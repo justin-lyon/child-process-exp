@@ -10,11 +10,14 @@ const options = {
   env: process.env
 }
 
-const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct","message": "%s", "files": []}'
+const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct","message": "%s", "changes": []}'
 const gitLogArgs = [
   'log',
   '--first-parent',
-  `--pretty=format:${gitLogFormat}`,
+  `--pretty=format:${gitLogFormat}`
+]
+const gitDiffArgs = [
+  'show',
   '--name-status'
 ]
 
@@ -37,7 +40,42 @@ const gitLog = spawn('git', gitLogArgs)
 gitLog.stdout.pipe(logFile)
 
 // Required so node process ends. Else, Node may hang on the child process.
-gitLog.on('exit', onExit)
+const bufs = [];
+const changesBuffer = []
+gitLog.on('exit', (code, signal) => {
+  onExit(code, signal)
+
+  const commits = bufs.join('').toString().trim().split('\n')
+    .map(bufStr => JSON.parse(bufStr))
+
+  const hashes = commits.map(c => c.commit)
+
+  hashes.forEach(hash => {
+    const args = [
+      ...gitDiffArgs,
+      hash
+    ]
+    const fileDetails = spawn('git', args)
+
+    fileDetails.stdout.on('data', data => {
+      changesBuffer.push({
+        hash,
+        data: data.toString().trim().split('\n')
+      })
+    })
+    fileDetails.on('exit', (code, signal) => {
+      onExit(code, signal)
+      console.log('changes', JSON.stringify(changesBuffer, null, 2))
+    })
+  })
+
+  console.log('commits', commits)
+  console.log('hashes', hashes)
+})
+
+gitLog.stdout.on('data', data => {
+  bufs.push(data);
+})
 //gitStatus.on('exit', onExit)
 
 // Not necessary for my use case, but event emitters are also possible.

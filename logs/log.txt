@@ -1,19 +1,6 @@
-{"commit": "bf6a7a4c2e530b3b9e9be95a30b6864a0542f805","author": "Justin Lyon <jml6487@gmail.com>","date": "1541608595","message": "rm files placeholder", "files": []}
-M	src/index.js
-
-{"commit": "ceef66b7e3775a6139d6f3f79aa68e798e3c0308","author": "Justin Lyon <jml6487@gmail.com>","date": "1541608572","message": "experimenting with git log formatting", "files": []}
-M	logs/log.txt
-M	src/index.js
-
-{"commit": "c32be0582204a91a138d9a55f87d331d0e929496","author": "Justin Lyon <jml6487@gmail.com>","date": "1541602562","message": "add description to readme", "files": []}
-M	README.md
-
-{"commit": "c3f74ff6cd2b143abb1af6dc949885f458824065","author": "Justin Lyon <jml6487@gmail.com>","date": "1541602335","message": "add git log args to print raw and diff file names only", "files": []}
-M	logs/log.txt
-M	src/index.js
-
-{"commit": "049607129046f9573dcfea4b991110dd99c81cb9","author": "Justin Lyon <jml6487@gmail.com>","date": "1541601590","message": "init commit", "files": []}
-A	README.md
-A	logs/log.txt
-A	package.json
-A	src/index.js
+{"commit": "eb7812a8f5003c71cc86232fbc2f10cfc8b0a9de","author": "Justin Lyon <jml6487@gmail.com>","date": "1541608691","message": "update log", "changes": []}
+{"commit": "bf6a7a4c2e530b3b9e9be95a30b6864a0542f805","author": "Justin Lyon <jml6487@gmail.com>","date": "1541608595","message": "rm files placeholder", "changes": []}
+{"commit": "ceef66b7e3775a6139d6f3f79aa68e798e3c0308","author": "Justin Lyon <jml6487@gmail.com>","date": "1541608572","message": "experimenting with git log formatting", "changes": []}
+{"commit": "c32be0582204a91a138d9a55f87d331d0e929496","author": "Justin Lyon <jml6487@gmail.com>","date": "1541602562","message": "add description to readme", "changes": []}
+{"commit": "c3f74ff6cd2b143abb1af6dc949885f458824065","author": "Justin Lyon <jml6487@gmail.com>","date": "1541602335","message": "add git log args to print raw and diff file names only", "changes": []}
+{"commit": "049607129046f9573dcfea4b991110dd99c81cb9","author": "Justin Lyon <jml6487@gmail.com>","date": "1541601590","message": "init commit", "changes": []}
