@@ -1,3 +1,7 @@
+{"commit": "42509169ef91dbb108858e1d39127f97e4cea472","author": "jlyon <jml6487@gmail.com>","date": "1541634910","message": "rm extra console logs", "changes": []}
+M	logs/log.txt
+M	src/index.js
+
 {"commit": "1fafd09f239f98170b0f52a8ac7de0f62cfcdf51","author": "jlyon <jml6487@gmail.com>","date": "1541634833","message": "fixed it. only had to think about it all the way home from work today", "changes": []}
 M	logs/log.txt
 M	src/index.js
