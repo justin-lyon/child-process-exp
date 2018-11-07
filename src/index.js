@@ -10,28 +10,29 @@ const options = {
   env: process.env
 }
 
+const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct","message": "%s", "files": [%B]}'
 const gitLogArgs = [
   'log',
   '--first-parent',
-  '--name-only',
-  '--pretty=raw'
+  `--pretty=format:${gitLogFormat}`,
+  '--name-status'
 ]
 
-var onExit = (code, signal) => {
+const onExit = (code, signal) => {
   console.log(`Child process exited with code ${code} and signal ${signal}.`)
 }
 
-var onStdOut = data => {
+const onStdOut = data => {
   console.log(`child stdout:\n${data}`)
 }
 
-var onStdIn = data => {
+const onStdIn = data => {
   console.log(`child stdout:\n${data}`)
 }
 
 const logFile = fs.createWriteStream('./logs/log.txt')
 //const gitStatus = spawn('git', ['status'])
-const gitLog = spawn('git', gitLogArgs, options)
+const gitLog = spawn('git', gitLogArgs)
 
 gitLog.stdout.pipe(logFile)
 
