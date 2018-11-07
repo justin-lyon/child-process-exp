@@ -10,6 +10,13 @@ const options = {
   env: process.env
 }
 
+const gitLogArgs = [
+  'log',
+  '--first-parent',
+  '--name-only',
+  '--pretty=raw'
+]
+
 var onExit = (code, signal) => {
   console.log(`Child process exited with code ${code} and signal ${signal}.`)
 }
@@ -23,15 +30,15 @@ var onStdIn = data => {
 }
 
 const logFile = fs.createWriteStream('./logs/log.txt')
-const gitStatus = spawn('git', ['status'])
-const gitLog = spawn('git', ['log', '--first-parent', 'origin..HEAD'])
+//const gitStatus = spawn('git', ['status'])
+const gitLog = spawn('git', gitLogArgs, options)
 
 gitLog.stdout.pipe(logFile)
 
 // Required so node process ends. Else, Node may hang on the child process.
 gitLog.on('exit', onExit)
-gitStatus.on('exit', onExit)
+//gitStatus.on('exit', onExit)
 
 // Not necessary for my use case, but event emitters are also possible.
-gitStatus.stdout.on('data', onStdOut)
-gitStatus.stdin.on('data', onStdIn)
+// gitStatus.stdout.on('data', onStdOut)
+// gitStatus.stdin.on('data', onStdIn)
