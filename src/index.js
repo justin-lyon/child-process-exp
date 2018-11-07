@@ -14,10 +14,7 @@ const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct","messa
 const gitLogArgs = [
   'log',
   '--first-parent',
-  `--pretty=format:${gitLogFormat}`
-]
-const gitDiffArgs = [
-  'show',
+  `--pretty=format:${gitLogFormat}`,
   '--name-status'
 ]
 
@@ -33,44 +30,43 @@ const onStdIn = data => {
   console.log(`child stdout:\n${data}`)
 }
 
+const isEmpty = str  => {
+  return !str || str.length === 0
+}
+
+// const isBlank = str => {
+//   return !str || /^\s*$/.test(str)
+// }
+
 const logFile = fs.createWriteStream('./logs/log.txt')
 //const gitStatus = spawn('git', ['status'])
 const gitLog = spawn('git', gitLogArgs)
 
 gitLog.stdout.pipe(logFile)
 
-// Required so node process ends. Else, Node may hang on the child process.
 const bufs = [];
-const changesBuffer = []
+const isJson = /{.+}/g
+// Required so node process ends. Else, Node may hang on the child process.
 gitLog.on('exit', (code, signal) => {
   onExit(code, signal)
 
   const commits = bufs.join('').toString().trim().split('\n')
-    .map(bufStr => JSON.parse(bufStr))
+    .reduce((acc, bufStr) => {
+      if(isJson.test(bufStr)) {
+        acc.push(JSON.parse(bufStr))
+      } else if(!isEmpty(bufStr)) {
+        console.log('not empty and not json', bufStr.split('\t'))
+        const parts = bufStr.split('\t')
+        const change = {
+          status: parts[0],
+          file: parts[1]
+        }
+        acc[acc.length - 1].changes.push(change)
+      }
+      return acc
+    }, [])
 
-  const hashes = commits.map(c => c.commit)
-
-  hashes.forEach(hash => {
-    const args = [
-      ...gitDiffArgs,
-      hash
-    ]
-    const fileDetails = spawn('git', args)
-
-    fileDetails.stdout.on('data', data => {
-      changesBuffer.push({
-        hash,
-        data: data.toString().trim().split('\n')
-      })
-    })
-    fileDetails.on('exit', (code, signal) => {
-      onExit(code, signal)
-      console.log('changes', JSON.stringify(changesBuffer, null, 2))
-    })
-  })
-
-  console.log('commits', commits)
-  console.log('hashes', hashes)
+  console.log('commits', JSON.stringify(commits, null, 2))
 })
 
 gitLog.stdout.on('data', data => {
