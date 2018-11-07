@@ -1,3 +1,7 @@
+{"commit": "5b68452f2428c3fb31b10bc3495e3b735c8c92b0","author": "jlyon <jml6487@gmail.com>","date": "1541635023","message": "add logs to git ignore", "changes": []}
+A	.gitignore
+M	logs/log.txt
+
 {"commit": "42509169ef91dbb108858e1d39127f97e4cea472","author": "jlyon <jml6487@gmail.com>","date": "1541634910","message": "rm extra console logs", "changes": []}
 M	logs/log.txt
 M	src/index.js
