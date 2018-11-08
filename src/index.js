@@ -38,7 +38,18 @@ const isEmpty = str  => {
 //   return !str || /^\s*$/.test(str)
 // }
 
-const logFile = fs.createWriteStream('./logs/log.txt')
+const getWriteStream = path => {
+  try {
+    const stream = fs.createWriteStream(path)
+    return stream
+  } catch(e) {
+    fs.writeFile(path, '', err => {
+      getWriteStream(path)
+    })
+  }
+}
+
+const logFile = getWriteStream('log.txt')
 //const gitStatus = spawn('git', ['status'])
 const gitLog = spawn('git', gitLogArgs)
 
