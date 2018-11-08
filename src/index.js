@@ -1,6 +1,7 @@
 const { spawn } = require('child_process')
 const fs = require('fs')
 const { create: createGitTranslator } = require('./git-transform')
+const { create: splitter } = require('./split')
 
 // Add Options as optional third argument to .spawn()
 // cwd specifies the working directory, defaults to current
@@ -39,41 +40,19 @@ const isEmpty = str  => {
 //   return !str || /^\s*$/.test(str)
 // }
 
+// const splitLines = splitter()
 const gitParser = createGitTranslator()
-const logFile = fs.createWriteStream('log.txt')
+
+const logFile = fs.createWriteStream('logs/data')
 //const gitStatus = spawn('git', ['status'])
 const gitLog = spawn('git', gitLogArgs)
 
-gitLog.stdout.pipe(gitParser)
-gitParser.pipe(logFile)
+gitLog.stdout
+//  .pipe(splitLines)
+  .pipe(gitParser)
+  .pipe(process.stdout)
+//gitParser.pipe(logFile)
 
-const bufs = [];
-const isJson = /{.+}/g
-// Required so node process ends. Else, Node may hang on the child process.
-gitLog.on('exit', (code, signal) => {
-  onExit(code, signal)
-
-  const commits = bufs.join('').toString().trim().split('\n')
-    .reduce((acc, bufStr) => {
-      if(isJson.test(bufStr)) {
-        acc.push(JSON.parse(bufStr))
-      } else if(!isEmpty(bufStr)) {
-        const parts = bufStr.split('\t')
-        const change = {
-          status: parts[0],
-          file: parts[1]
-        }
-        acc[acc.length - 1].changes.push(change)
-      }
-      return acc
-    }, [])
-
-  console.log('commits', JSON.stringify(commits, null, 2))
-})
-
-gitLog.stdout.on('data', data => {
-  bufs.push(data);
-})
 //gitStatus.on('exit', onExit)
 
 // Not necessary for my use case, but event emitters are also possible.
