@@ -1,5 +1,5 @@
 const toLines = require('./to-lines')
-const toJSON = require('./toJSON')
+const toJSON = require('./to-json')
 const git2Json = require('./git-transform')
 
 module.exports = {
