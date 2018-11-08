@@ -14,9 +14,8 @@ const readFileDiff = line => {
   }
 }
 
-const readGitLog = (chunkStr) => {
-  return chunkStr
-    .split('\n')
+const readGitLog = (lines) => {
+  return lines
     .reduce((acc, line) => {
       if(isJson.test(line)) {
         acc.push(JSON.parse(line))
@@ -28,24 +27,22 @@ const readGitLog = (chunkStr) => {
     }, [])
 }
 
-const transform = (chunk, encoding, cb) => {
+const transform = (lines, encoding, cb) => {
   const enc = encoding || 'utf8'
-  const chunkStr = chunk.toString().trim()
+  console.log('\n\nGIT TRANSFORM LINES', lines)
 
-  const commits = readGitLog(chunkStr)
-  process.stdout.write('.')
-  console.log('\nCOMMITS\n\n', JSON.stringify(commits, null, 2))
+  const commits = readGitLog(lines)
 
-  cb(null, JSON.stringify(commits))
+  return cb(null, commits)
 }
 
-const create = () => {
+const init = () => {
   return new Transform({
-    writeableObjectMode: true,
+    readableObjectMode: true,
+    writableObjectMode: true,
+    writeableHighWaterMark: 1,
     transform
   })
 }
 
-module.exports = {
-  create
-}
+module.exports = init
