@@ -1,5 +1,6 @@
 const { spawn } = require('child_process')
 const fs = require('fs')
+const { create: createGitTranslator } = require('./git-transform')
 
 // Add Options as optional third argument to .spawn()
 // cwd specifies the working directory, defaults to current
@@ -38,22 +39,13 @@ const isEmpty = str  => {
 //   return !str || /^\s*$/.test(str)
 // }
 
-const getWriteStream = path => {
-  try {
-    const stream = fs.createWriteStream(path)
-    return stream
-  } catch(e) {
-    fs.writeFile(path, '', err => {
-      getWriteStream(path)
-    })
-  }
-}
-
-const logFile = getWriteStream('log.txt')
+const gitParser = createGitTranslator()
+const logFile = fs.createWriteStream('log.txt')
 //const gitStatus = spawn('git', ['status'])
 const gitLog = spawn('git', gitLogArgs)
 
-gitLog.stdout.pipe(logFile)
+gitLog.stdout.pipe(gitParser)
+gitParser.pipe(logFile)
 
 const bufs = [];
 const isJson = /{.+}/g
