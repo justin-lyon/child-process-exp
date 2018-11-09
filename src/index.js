@@ -55,9 +55,11 @@ const newMain = () => {
       const buffer = []
       gitReader
         .on('data', data => {
+          console.log('Reading...');
           buffer.push(data)
         })
         .on('end', () => {
+          console.log('\nBUFFER\n\n', buffer.toString())
           resolve(buffer)
         })
         .on('error', err => {
@@ -78,8 +80,11 @@ const newMain = () => {
     const lineReader = Readable()
     const lines = gitLogBuffer.toString().trim().split('\n')
 
+    console.log('\nLINES\n\n', lines)
+
     return lines.reduce((acc, line) => {
       if(isJson.test(line)) {
+        console.log('JSON TESTED', line)
         acc.push(JSON.parse(line))
 
       } else if(!isEmpty(line)) {
