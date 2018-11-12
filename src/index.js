@@ -13,7 +13,7 @@ const options = {
   env: process.env
 }
 
-const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct","message": "%s"}'
+const gitLogFormat = '{"commit": "%H","author": "%aN <%aE>","date": "%ct %cr","message": "%s"}'
 const gitLogArgs = [
   'log',
   '--first-parent',
@@ -141,7 +141,7 @@ const print2Json = gitLogBuffer => {
 
 const write2File = commits => {
   const writer = fs.createWriteStream('logs/data')
-  writer.write(JSON.stringify(commits))
+  writer.write(JSON.stringify(commits, null, 2))
 }
 
 burpGitLog(gitLog.stdout)
